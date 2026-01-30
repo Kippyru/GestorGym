@@ -18,7 +18,7 @@ public class PersonaService {
         persona.setNombre(personaDTO.getNombre());
         persona.setApellido(personaDTO.getApellido());
         persona.setEmail(personaDTO.getEmail());
-        persona.setPassword(personaDTO.getPassword());
+        persona.setContraseña(personaDTO.getContraseña());
         personaRepository.save(persona);
     }
 }
