@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class PersonaDTO {
 
-    private int id_persona;
+    private Integer id_persona;
     private String nombre;
     private String apellido;
     private String email;

@@ -19,6 +19,6 @@ public class PersonaController {
     public String crear(@RequestBody PersonaDTO personaDTO) {
         personaService.crear(personaDTO);
 
-        return "Usuario creado";
+        return "Persona Creada";
     }
 }
