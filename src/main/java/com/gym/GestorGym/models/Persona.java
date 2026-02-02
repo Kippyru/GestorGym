@@ -1,25 +1,35 @@
 package com.gym.GestorGym.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import jakarta.persistence.*;
+import lombok.*;
 
+@Getter
+@Setter
 @Entity
-@Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Table(name = "persona")
 public class Persona {
-
     @Id
-    @GeneratedValue(strategy =  GenerationType.IDENTITY)
-    private Integer id_persona;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_persona", nullable = false)
+    private Integer id;
+
+    @Column(name = "nombre")
     private String nombre;
+
+    @Column(name = "apellido")
     private String apellido;
+
+    @Column(name = "email")
     private String email;
+
+    @Column(name = "`contraseña`", nullable = false)
     private String contraseña;
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "id_rol", nullable = false)
+    private Rol idRol;
+
 
 }
