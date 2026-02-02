@@ -1,5 +1,6 @@
 package com.gym.GestorGym.dto;
 
+import com.gym.GestorGym.models.Persona;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,6 +13,6 @@ import java.time.LocalDate;
 public class MiembroDTO {
     private Integer id_miembro;
     private String estado;
-    private LocalDate fecha_ingreso;
-    private Integer id_persona;
+    private LocalDate fechaingreso;
+    private Persona idpersona;
 }

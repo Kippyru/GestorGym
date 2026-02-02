@@ -14,8 +14,8 @@ public class MiembroService {
     public void crear(MiembroDTO miembroDTO) {
         Miembro miembro = new Miembro();
         miembro.setEstado(miembroDTO.getEstado());
-        miembro.setFecha_ingreso(miembroDTO.getFecha_ingreso());
-        miembro.setId_persona(miembroDTO.getId_persona());
+        miembro.setFechaIngreso(miembroDTO.getFechaingreso());
+        miembro.setIdPersona(miembroDTO.getIdpersona());
         miembroRepository.save(miembro);
     }
 }
