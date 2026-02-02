@@ -10,4 +10,5 @@ public class GestorGymApplication {
 		SpringApplication.run(GestorGymApplication.class, args);
 	}
 
+
 }
