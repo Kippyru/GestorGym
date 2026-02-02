@@ -16,7 +16,7 @@ public class Persona {
 
     @Id
     @GeneratedValue(strategy =  GenerationType.IDENTITY)
-    private Integer  id_persona;
+    private Integer id_persona;
     private String nombre;
     private String apellido;
     private String email;
