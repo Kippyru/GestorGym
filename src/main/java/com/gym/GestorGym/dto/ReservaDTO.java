@@ -15,6 +15,6 @@ public class ReservaDTO {
 
     private Integer id;
     private Instant fechaReserva;
-    private Miembro idMiembro;
-    private Turno idTurno;
+    private Integer idMiembro;
+    private Integer idTurno;
 }

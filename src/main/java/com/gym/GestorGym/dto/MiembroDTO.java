@@ -14,5 +14,5 @@ public class MiembroDTO {
     private Integer id_miembro;
     private String estado;
     private LocalDate fechaingreso;
-    private Persona idpersona;
+    private Integer idpersona;
 }

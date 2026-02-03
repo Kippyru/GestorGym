@@ -12,6 +12,6 @@ import lombok.NoArgsConstructor;
 public class StaffDTO {
     private Integer id;
     private String area;
-    private Persona idPersona;
-    private Turno idTurno;
+    private Integer idPersona;
+    private Integer idTurno;
 }

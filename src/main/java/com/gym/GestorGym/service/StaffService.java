@@ -1,8 +1,12 @@
 package com.gym.GestorGym.service;
 
 import com.gym.GestorGym.dto.StaffDTO;
+import com.gym.GestorGym.models.Persona;
 import com.gym.GestorGym.models.Staff;
+import com.gym.GestorGym.models.Turno;
+import com.gym.GestorGym.repository.PersonaRepository;
 import com.gym.GestorGym.repository.StaffRepository;
+import com.gym.GestorGym.repository.TurnoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,12 +17,25 @@ public class StaffService {
     @Autowired
     private StaffRepository staffRepository;
 
+    @Autowired
+    private PersonaRepository personaRepository;
+
+    @Autowired
+    private TurnoRepository turnoRepository;
+
     public void crear(StaffDTO staffDTO) {
+
+        Persona persona = personaRepository.findById(staffDTO.getIdPersona())
+                .orElseThrow(() -> new RuntimeException("Persona no encontrada"));
+
+        Turno turno = turnoRepository.findById(staffDTO.getIdTurno())
+                .orElseThrow(() -> new RuntimeException("Turno no encontrado"));
+
         Staff staff = new Staff();
 
         staff.setArea(staffDTO.getArea());
-        staff.setIdPersona(staffDTO.getIdPersona());
-        staff.setIdTurno(staffDTO.getIdTurno());
+        staff.setIdPersona(persona);
+        staff.setIdTurno(turno);
         staffRepository.save(staff);
     }
 
@@ -34,8 +51,19 @@ public class StaffService {
     public void update(int id, StaffDTO staffDTO) {
         Staff staff = listaId(id);
         staff.setArea(staffDTO.getArea());
-        staff.setIdPersona(staffDTO.getIdPersona());
-        staff.setIdTurno(staffDTO.getIdTurno());
+
+        if (staffDTO.getIdPersona() != null) {
+            Persona persona = personaRepository.findById(staffDTO.getIdPersona())
+                    .orElseThrow(() -> new RuntimeException("Persona no encontrada"));
+            staff.setIdPersona(persona);
+        }
+
+        if (staffDTO.getIdTurno() != null) {
+            Turno turno = turnoRepository.findById(staffDTO.getIdTurno())
+                    .orElseThrow(() -> new RuntimeException("Turno no encontrado"));
+            staff.setIdTurno(turno);
+        }
+
         staffRepository.save(staff);
     }
 
