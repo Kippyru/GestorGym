@@ -8,15 +8,13 @@ package com.gym.GestorGym.models;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 //@Data tiene todo pros y contras
 @Getter @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class Persona {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
