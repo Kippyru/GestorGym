@@ -7,7 +7,6 @@ import com.gym.GestorGym.mapper.Mapper;
 import com.gym.GestorGym.models.Persona;
 import com.gym.GestorGym.repository.PersonaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
