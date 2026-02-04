@@ -1,6 +1,7 @@
 package com.gym.GestorGym.service;
 
 import com.gym.GestorGym.dto.PersonaDTO;
+import com.gym.GestorGym.mapper.PersonaMapper;
 import com.gym.GestorGym.models.Persona;
 import com.gym.GestorGym.models.Rol;
 import com.gym.GestorGym.repository.PersonaRepository;
@@ -17,49 +18,45 @@ public class PersonaService {
     private PersonaRepository personaRepository;
 
     @Autowired
-    private RolRepository rolRepository;
+    private PersonaMapper personaMapper; // Inyectamos el mapper
 
-
+    //crear
     public void crear(PersonaDTO personaDTO) {
-
-        Rol rol = rolRepository.findById(personaDTO.getIdRol())
-                .orElseThrow(() -> new RuntimeException("Rol no encontrado"));
-
-        Persona persona = new Persona();
-        persona.setNombre(personaDTO.getNombre());
-        persona.setApellido(personaDTO.getApellido());
-        persona.setEmail(personaDTO.getEmail());
-        persona.setContraseña(personaDTO.getContraseña());
-        persona.setIdRol(rol);
+        // MapStruct se encarga de buscar el Rol y setear todo
+        Persona persona = personaMapper.toEntity(personaDTO);
         personaRepository.save(persona);
     }
 
-    public List<Persona> lista(){
-        return personaRepository.findAll();
+    //traer
+    public List<PersonaDTO> lista() {
+        List<Persona> personas = personaRepository.findAll();
+        // MapStruct mapea la lista completa automáticamente
+        return personaMapper.toDtoList(personas);
     }
 
-    public Persona listaId(int id) {
-        return personaRepository.findById(id)
+    //buscar por id
+    public PersonaDTO listaIdDto(int id) {
+        Persona persona = personaRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Persona no encontrada"));
+        return personaMapper.toDto(persona);
     }
 
-    public void update(int id, PersonaDTO personaDTO) {
-        Persona persona = listaId(id);
-        persona.setNombre(personaDTO.getNombre());
-        persona.setApellido(personaDTO.getApellido());
-        persona.setEmail(personaDTO.getEmail());
-        persona.setContraseña(personaDTO.getContraseña());
+    //actualizar por id
+    public PersonaDTO actualizar(Integer id, PersonaDTO dto) {
+        Persona persona = personaRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Persona no encontrada"));
 
-        if (personaDTO.getIdRol() != null) {
-            Rol rol = rolRepository.findById(personaDTO.getIdRol())
-                    .orElseThrow(() -> new RuntimeException("Rol no encontrado"));
-            persona.setIdRol(rol);
+        personaMapper.updateEntityFromDto(dto, persona);
 
-            personaRepository.save(persona);
+        Persona actualizada = personaRepository.save(persona);
+        return personaMapper.toDto(actualizada);
+    }
+
+    //borrar
+    public void eliminar(Integer id) {
+        if (!personaRepository.existsById(id)) {
+            throw new RuntimeException("Persona no encontrada");
         }
-    }
-
-    public void delete(int id){
         personaRepository.deleteById(id);
     }
 }
