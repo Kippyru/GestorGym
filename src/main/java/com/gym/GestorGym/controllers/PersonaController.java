@@ -32,13 +32,13 @@ public class PersonaController  {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<PersonaDTO> actualizarPersona (@PathVariable Long id_persona,
+    public ResponseEntity<PersonaDTO> actualizarPersona (@PathVariable Integer id_persona,
                                                         @RequestBody PersonaDTO dto) {
         return ResponseEntity.ok(personaService.actualizarPersona(id_persona,dto));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> borrarPersona (@PathVariable Long id_persona) {
+    public ResponseEntity<Void> borrarPersona (@PathVariable Integer id_persona) {
         personaService.eliminarPersona(id_persona);
         return ResponseEntity.noContent().build();
     }

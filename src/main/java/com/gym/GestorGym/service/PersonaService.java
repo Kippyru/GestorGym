@@ -36,7 +36,7 @@ public class PersonaService implements IPersonaService {
     }
 
     @Override
-    public PersonaDTO actualizarPersona(Long id_persona, PersonaDTO personaDto) {
+    public PersonaDTO actualizarPersona(Integer id_persona, PersonaDTO personaDto) {
         //existe la persona?
         Persona per = repo.findById(id_persona)
         .orElseThrow(() -> new NotFoundException("Producto no encontrado"));
@@ -49,7 +49,7 @@ public class PersonaService implements IPersonaService {
     }
 
     @Override
-    public void eliminarPersona(Long id_persona) {
+    public void eliminarPersona(Integer id_persona) {
         if (!repo.existsById(id_persona)){
             throw new NotFoundException("Persona no encontrada para eliminar");
         }

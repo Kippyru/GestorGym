@@ -1,9 +1,9 @@
 package com.gym.GestorGym.repository;
 
-import com.gym.GestorGym.models.Persona;
+import com.gym.GestorGym.models.Rol;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface PersonaRepository extends JpaRepository<Persona,Integer> {
+public interface RolRepository extends JpaRepository<Rol, Integer> {
 }

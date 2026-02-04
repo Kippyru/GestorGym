@@ -1,6 +1,7 @@
 package com.gym.GestorGym.models;
 
 
+import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -12,9 +13,10 @@ import lombok.Setter;
 @Getter @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Entity
 public class Clase {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id_clase;
+    private Integer id_clase;
     private String descripcion;
 }

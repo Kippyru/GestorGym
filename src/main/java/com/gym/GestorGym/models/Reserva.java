@@ -16,6 +16,6 @@ import java.time.LocalDate;
 public class Reserva {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id_reserva;
+    private Integer id_reserva;
     private LocalDate fecha_reserva;
 }

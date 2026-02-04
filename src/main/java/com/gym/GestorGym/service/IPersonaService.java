@@ -8,9 +8,7 @@ public interface IPersonaService {
 
      List<PersonaDTO> traerPersonas();
      PersonaDTO crearPersona(PersonaDTO personaDto);
-     PersonaDTO actualizarPersona(Long id_persona, PersonaDTO personaDto);
-     void eliminarPersona(Long id_persona);
-
-
+     PersonaDTO actualizarPersona(Integer id_persona, PersonaDTO personaDto);
+     void eliminarPersona(Integer id_persona);
 
 }

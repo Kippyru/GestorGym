@@ -7,12 +7,12 @@ import lombok.*;
 @NoArgsConstructor
 @Builder
 public class PersonaDTO {
-    private Long id_persona;
+    private Integer id_persona;
     private String nombre;
     private String apellido;
     private String email;
     private String contraseña;
     //Rol
-    private int id_rol;
+    private Integer id_rol;
 
 }

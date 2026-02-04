@@ -14,7 +14,7 @@ import lombok.Setter;
 public class Plan {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id_plan;
+    private Integer id_plan;
     private String nombre;
     private int precio;
     private int duracion;

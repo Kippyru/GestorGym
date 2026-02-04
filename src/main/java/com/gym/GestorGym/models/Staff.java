@@ -14,6 +14,6 @@ import lombok.Setter;
 public class Staff {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id_staff;
+    private Integer id_staff;
     private String area;
 }
