@@ -3,9 +3,7 @@ package com.gym.GestorGym.service;
 import com.gym.GestorGym.dto.PersonaDTO;
 import com.gym.GestorGym.mapper.PersonaMapper;
 import com.gym.GestorGym.models.Persona;
-import com.gym.GestorGym.models.Rol;
 import com.gym.GestorGym.repository.PersonaRepository;
-import com.gym.GestorGym.repository.RolRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,11 +16,10 @@ public class PersonaService {
     private PersonaRepository personaRepository;
 
     @Autowired
-    private PersonaMapper personaMapper; // Inyectamos el mapper
+    private PersonaMapper personaMapper;
 
     //crear
     public void crear(PersonaDTO personaDTO) {
-        // MapStruct se encarga de buscar el Rol y setear todo
         Persona persona = personaMapper.toEntity(personaDTO);
         personaRepository.save(persona);
     }
@@ -30,7 +27,6 @@ public class PersonaService {
     //traer
     public List<PersonaDTO> lista() {
         List<Persona> personas = personaRepository.findAll();
-        // MapStruct mapea la lista completa automáticamente
         return personaMapper.toDtoList(personas);
     }
 

@@ -1,13 +1,9 @@
 package com.gym.GestorGym.service;
 
 import com.gym.GestorGym.dto.ReservaDTO;
-import com.gym.GestorGym.models.Miembro;
-import com.gym.GestorGym.models.Persona;
-import com.gym.GestorGym.models.Reserva;
-import com.gym.GestorGym.models.Turno;
-import com.gym.GestorGym.repository.MiembroRepository;
+import com.gym.GestorGym.mapper.ReservaMapper;
+import com.gym.GestorGym.models.*;
 import com.gym.GestorGym.repository.ReservaRepository;
-import com.gym.GestorGym.repository.TurnoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,54 +14,38 @@ public class ReservaService {
     @Autowired
     private ReservaRepository reservaRepository;
     @Autowired
-    private TurnoRepository turnoRepository;
-    @Autowired
-    private MiembroRepository miembroRepository;
+    private ReservaMapper reservaMapper;
 
     public void crear(ReservaDTO reservaDTO) {
-
-        Miembro miembro = miembroRepository.findById(reservaDTO.getIdMiembro())
-                .orElseThrow(() -> new RuntimeException("Turno no encontrado"));
-
-        Turno turno = turnoRepository.findById(reservaDTO.getIdTurno())
-                .orElseThrow(() -> new RuntimeException("Turno no encontrado"));
-
-        Reserva reserva = new Reserva();
-        reserva.setFechaReserva(reservaDTO.getFechaReserva());
-        reserva.setIdMiembro(miembro);
-        reserva.setIdTurno(turno);
+        Reserva reserva = reservaMapper.toEntity(reservaDTO);
         reservaRepository.save(reserva);
     }
 
-    public List<Reserva> lista(){
-        return reservaRepository.findAll();
+    public List<ReservaDTO> lista() {
+        List<Reserva> reservas = reservaRepository.findAll();
+        return reservaMapper.reservaList(reservas);
     }
 
-    public Reserva listaId(int id) {
-        return reservaRepository.findById(id)
+    public ReservaDTO listaId(int id) {
+        Reserva reserva = reservaRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Reserva no encontrada"));
+        return reservaMapper.toDto(reserva);
     }
 
-    public void update(int id, ReservaDTO reservaDTO) {
-        Reserva reserva = listaId(id);
-        reserva.setFechaReserva(reservaDTO.getFechaReserva());
+    public ReservaDTO update(Integer id, ReservaDTO reservaDTO) {
+        Reserva reserva = reservaRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Reserva no encontrada"));
 
-        if (reservaDTO.getIdMiembro() != null) {
-            Miembro miembro = miembroRepository.findById(reservaDTO.getIdMiembro())
-                    .orElseThrow(() -> new RuntimeException("Turno no encontrado"));
-            reserva.setIdMiembro(miembro);
-        }
+        reservaMapper.updateReserva(reservaDTO, reserva);
 
-        if (reservaDTO.getIdTurno() != null) {
-            Turno turno = turnoRepository.findById(reservaDTO.getIdTurno())
-                    .orElseThrow(() -> new RuntimeException("Turno no encontrado"));
-            reserva.setIdTurno(turno);
-        }
-
-        reservaRepository.save(reserva);
+        Reserva actualizada = reservaRepository.save(reserva);
+        return reservaMapper.toDto(actualizada);
     }
 
     public void delete(int id){
+        if (!reservaRepository.existsById(id)) {
+            throw new RuntimeException("Reserva no encontrada");
+        }
         reservaRepository.deleteById(id);
     }
 }

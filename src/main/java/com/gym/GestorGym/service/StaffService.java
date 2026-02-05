@@ -1,7 +1,10 @@
 package com.gym.GestorGym.service;
 
+import com.gym.GestorGym.dto.ReservaDTO;
 import com.gym.GestorGym.dto.StaffDTO;
+import com.gym.GestorGym.mapper.StaffMapper;
 import com.gym.GestorGym.models.Persona;
+import com.gym.GestorGym.models.Reserva;
 import com.gym.GestorGym.models.Staff;
 import com.gym.GestorGym.models.Turno;
 import com.gym.GestorGym.repository.PersonaRepository;
@@ -18,24 +21,11 @@ public class StaffService {
     private StaffRepository staffRepository;
 
     @Autowired
-    private PersonaRepository personaRepository;
-
-    @Autowired
-    private TurnoRepository turnoRepository;
+    private StaffMapper staffMapper;
 
     public void crear(StaffDTO staffDTO) {
 
-        Persona persona = personaRepository.findById(staffDTO.getIdPersona())
-                .orElseThrow(() -> new RuntimeException("Persona no encontrada"));
-
-        Turno turno = turnoRepository.findById(staffDTO.getIdTurno())
-                .orElseThrow(() -> new RuntimeException("Turno no encontrado"));
-
-        Staff staff = new Staff();
-
-        staff.setArea(staffDTO.getArea());
-        staff.setIdPersona(persona);
-        staff.setIdTurno(turno);
+        Staff staff = staffMapper.toEntity(staffDTO);
         staffRepository.save(staff);
     }
 
@@ -48,26 +38,20 @@ public class StaffService {
                 .orElseThrow(() -> new RuntimeException("Staff no encontrado"));
     }
 
-    public void update(int id, StaffDTO staffDTO) {
-        Staff staff = listaId(id);
-        staff.setArea(staffDTO.getArea());
+    public StaffDTO update(Integer id, StaffDTO staffDTO) {
+        Staff staff = staffRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Staff no encontrado"));
 
-        if (staffDTO.getIdPersona() != null) {
-            Persona persona = personaRepository.findById(staffDTO.getIdPersona())
-                    .orElseThrow(() -> new RuntimeException("Persona no encontrada"));
-            staff.setIdPersona(persona);
-        }
+        staffMapper.updateStaff(staffDTO, staff);
 
-        if (staffDTO.getIdTurno() != null) {
-            Turno turno = turnoRepository.findById(staffDTO.getIdTurno())
-                    .orElseThrow(() -> new RuntimeException("Turno no encontrado"));
-            staff.setIdTurno(turno);
-        }
-
-        staffRepository.save(staff);
+        Staff actualizada = staffRepository.save(staff);
+        return staffMapper.toDto(actualizada);
     }
 
     public void delete(int id){
+        if (!staffRepository.existsById(id)) {
+            throw new RuntimeException("Reserva no encontrada");
+        }
         staffRepository.deleteById(id);
     }
 }

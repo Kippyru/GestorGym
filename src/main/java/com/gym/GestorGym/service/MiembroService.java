@@ -1,10 +1,9 @@
 package com.gym.GestorGym.service;
 
 import com.gym.GestorGym.dto.MiembroDTO;
+import com.gym.GestorGym.mapper.MiembroMapper;
 import com.gym.GestorGym.models.Miembro;
-import com.gym.GestorGym.models.Persona;
 import com.gym.GestorGym.repository.MiembroRepository;
-import com.gym.GestorGym.repository.PersonaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,44 +15,38 @@ public class MiembroService {
     private MiembroRepository miembroRepository;
 
     @Autowired
-    private PersonaRepository personaRepository;
+    private MiembroMapper miembroMapper;
 
     public void crear(MiembroDTO miembroDTO) {
-        Persona persona = personaRepository.findById(miembroDTO.getIdpersona())
-                .orElseThrow(() -> new RuntimeException("Persona no encontrada"));
-
-        Miembro miembro = new Miembro();
-        miembro.setEstado(miembroDTO.getEstado());
-        miembro.setFechaIngreso(miembroDTO.getFechaingreso());
-        miembro.setIdPersona(persona);
+        Miembro miembro = miembroMapper.toEntity(miembroDTO);
         miembroRepository.save(miembro);
     }
 
-    public List<Miembro> lista(){
-        return miembroRepository.findAll();
+    public List<MiembroDTO> lista(){
+        List<Miembro> miembros = miembroRepository.findAll();
+        return miembroMapper.toDtoList(miembros);
     }
 
-    public Miembro listaId(int id) {
-        return miembroRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Persona no encontrada"));
+    public MiembroDTO listaId(int id) {
+        Miembro miembro = miembroRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Miembro no encontrado"));
+        return miembroMapper.toDto(miembro);
     }
 
-    public void update(int id, MiembroDTO miembroDTO) {
+    public MiembroDTO update(int id, MiembroDTO miembroDTO) {
+        Miembro miembro = miembroRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Miembro no encontrado"));
 
-        Miembro miembro = listaId(id);
-        miembro.setEstado(miembroDTO.getEstado());
-        miembro.setFechaIngreso(miembroDTO.getFechaingreso());
+        miembroMapper.updateEntity(miembroDTO, miembro);
 
-        if (miembroDTO.getIdpersona() != null) {
-            Persona persona = personaRepository.findById(miembroDTO.getIdpersona())
-                    .orElseThrow(() -> new RuntimeException("Persona no encontrada"));
-            miembro.setIdPersona(persona);
-        }
-
-        miembroRepository.save(miembro);
+        Miembro actualizado = miembroRepository.save(miembro);
+        return miembroMapper.toDto(actualizado);
     }
 
     public void delete(int id) {
+        if (!miembroRepository.existsById(id)) {
+            throw new RuntimeException("Miembro no encontrado");
+        }
         miembroRepository.deleteById(id);
     }
 }

@@ -1,7 +1,10 @@
 package com.gym.GestorGym.service;
 
+import com.gym.GestorGym.dto.ReservaDTO;
 import com.gym.GestorGym.dto.TurnoDTO;
+import com.gym.GestorGym.mapper.TurnoMapper;
 import com.gym.GestorGym.models.Clase;
+import com.gym.GestorGym.models.Reserva;
 import com.gym.GestorGym.models.Turno;
 import com.gym.GestorGym.repository.ClaseRepository;
 import com.gym.GestorGym.repository.TurnoRepository;
@@ -15,46 +18,38 @@ public class TurnoService {
     @Autowired
     private TurnoRepository turnoRepository;
     @Autowired
-    private ClaseRepository claseRepository;
+    private TurnoMapper turnoMapper;
 
     public void crear(TurnoDTO turnoDTO) {
-
-        Clase clase = claseRepository.findById(turnoDTO.getIdClase())
-                .orElseThrow(() -> new RuntimeException("Clase no encontrada"));
-
-        Turno turno = new Turno();
-        turno.setCupos(turnoDTO.getCupos());
-        turno.setHora(turnoDTO.getHora());
-        turno.setFecha(turnoDTO.getFecha());
-        turno.setIdClase(clase);
+        Turno turno = turnoMapper.toEntity(turnoDTO);
         turnoRepository.save(turno);
     }
 
-    public List<Turno> lista(){
-        return turnoRepository.findAll();
+    public List<TurnoDTO> lista() {
+        List<Turno> turnos = turnoRepository.findAll();
+        return turnoMapper.turnoList(turnos);
     }
 
-    public Turno listaId(int id) {
-        return turnoRepository.findById(id)
+    public TurnoDTO listaIdDto(int id) {
+        Turno turno = turnoRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Turno no encontrado"));
+        return turnoMapper.toDto(turno);
     }
 
-    public void update(int id, TurnoDTO turnoDTO) {
-        Turno turno = listaId(id);
-        turno.setCupos(turnoDTO.getCupos());
-        turno.setHora(turnoDTO.getHora());
-        turno.setFecha(turnoDTO.getFecha());
+    public TurnoDTO actualizar(Integer id, TurnoDTO turnoDTO) {
+        Turno turno = turnoRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Turno no encontrado"));
 
-        if (turnoDTO.getIdClase() != null) {
-            Clase clase = claseRepository.findById(turnoDTO.getIdClase())
-                    .orElseThrow(() -> new RuntimeException("Clase no encontrada"));
-            turno.setIdClase(clase);
-        }
+        turnoMapper.updateTurno(turnoDTO, turno);
 
-        turnoRepository.save(turno);
+        Turno actualizada = turnoRepository.save(turno);
+        return turnoMapper.toDto(actualizada);
     }
 
     public void delete(int id){
+        if (!turnoRepository.existsById(id)) {
+            throw new RuntimeException("Turno no encontrado");
+        }
         turnoRepository.deleteById(id);
     }
 }
