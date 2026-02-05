@@ -5,7 +5,9 @@ import com.gym.GestorGym.dto.PersonaDTO;
 import com.gym.GestorGym.exception.NotFoundException;
 import com.gym.GestorGym.mapper.Mapper;
 import com.gym.GestorGym.models.Persona;
+import com.gym.GestorGym.models.Rol;
 import com.gym.GestorGym.repository.PersonaRepository;
+import com.gym.GestorGym.repository.RolRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,15 +27,21 @@ public class PersonaService implements IPersonaService {
 
     @Override
     public PersonaDTO crearPersona(PersonaDTO personaDto) {
-        var per = Persona.builder()
-                .nombre(personaDto.getNombre())
-                .apellido(personaDto.getApellido())
-                .email(personaDto.getEmail())
-                .contraseña(personaDto.getContraseña())
-                .build();
+        // 1. Usamos el Mapper para pasar de DTO a Entidad
+        Persona per = Mapper.toEntity(personaDto);
+
+        // 2. Buscamos el rol y lo asignamos
+        if (personaDto.getId_rol() != null) {
+            Rol rol = rolRepo.findById(personaDto.getId_rol())
+                    .orElseThrow(() -> new NotFoundException("El Rol con ID " + personaDto.getId_rol() + " no existe"));
+            per.setRol(rol);
+        }
+
+        // 3. Guardamos y devolvemos mapeado a DTO
         return Mapper.toDTO(repo.save(per));
     }
-
+    @Autowired
+    private RolRepository rolRepo;
     @Override
     public PersonaDTO actualizarPersona(Integer id_persona, PersonaDTO personaDto) {
         //existe la persona?
@@ -43,6 +51,15 @@ public class PersonaService implements IPersonaService {
         per.setApellido(personaDto.getApellido());
         per.setEmail(personaDto.getEmail());
         per.setContraseña(personaDto.getContraseña());
+        System.out.println("antes del if -------------------------");
+        if (personaDto.getId_rol() != null) {
+            Rol rol = rolRepo.findById(personaDto.getId_rol())
+                    .orElseThrow(() -> new NotFoundException("Rol no encontrado"));
+            System.out.println("------------------------------------------------");
+            System.out.println("Rol encontrado" + rol.getNombre() + rol.getId_rol());
+            System.out.println("----------------------------------------------------------------");
+            per.setRol(rol);
+        }
 
         return Mapper.toDTO(repo.save(per));
     }

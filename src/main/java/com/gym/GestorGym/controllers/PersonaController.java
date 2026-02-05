@@ -1,6 +1,10 @@
 package com.gym.GestorGym.controllers;
 
 import com.gym.GestorGym.dto.PersonaDTO;
+import com.gym.GestorGym.exception.NotFoundException;
+import com.gym.GestorGym.mapper.Mapper;
+import com.gym.GestorGym.models.Persona;
+import com.gym.GestorGym.models.Rol;
 import com.gym.GestorGym.service.IPersonaService;
 import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,34 +18,31 @@ import java.util.List;
 //controller-->service-->repository(mvc)
 @RestController
 @RequestMapping("/api/persona")
-public class PersonaController  {
+public class PersonaController {
 
     @Autowired
     private IPersonaService personaService;
 
     @GetMapping
-    public ResponseEntity<List<PersonaDTO>> traerPersona () {
-
+    public ResponseEntity<List<PersonaDTO>> traerPersona() {
         return ResponseEntity.ok(personaService.traerPersonas());
     }
-    @PostMapping
-    public ResponseEntity<PersonaDTO> crearPersona(@RequestBody PersonaDTO dto){
-        PersonaDTO creado = personaService.crearPersona(dto);
 
-        return ResponseEntity.created(URI.create("/api/persona" + creado.getId_persona())).body(creado);
+    @PostMapping
+    public ResponseEntity<PersonaDTO> crearPersona(@RequestBody PersonaDTO dto) {
+        // El Controller NO busca en el repo, solo delega al Service
+        PersonaDTO creado = personaService.crearPersona(dto);
+        return ResponseEntity.created(URI.create("/api/persona/" + creado.getId_persona())).body(creado);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<PersonaDTO> actualizarPersona (@PathVariable Integer id_persona,
-                                                        @RequestBody PersonaDTO dto) {
-        return ResponseEntity.ok(personaService.actualizarPersona(id_persona,dto));
+    public ResponseEntity<PersonaDTO> actualizarPersona(@PathVariable("id") Integer id, @RequestBody PersonaDTO dto) {
+        return ResponseEntity.ok(personaService.actualizarPersona(id, dto));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> borrarPersona (@PathVariable Integer id_persona) {
-        personaService.eliminarPersona(id_persona);
+    public ResponseEntity<Void> borrarPersona(@PathVariable("id") Integer id) {
+        personaService.eliminarPersona(id);
         return ResponseEntity.noContent().build();
     }
-
-
 }

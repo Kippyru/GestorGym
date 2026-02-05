@@ -1,5 +1,8 @@
 package com.gym.GestorGym.dto;
 
+import com.gym.GestorGym.models.Rol;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import lombok.*;
 
 @Getter @Setter
@@ -12,7 +15,6 @@ public class PersonaDTO {
     private String apellido;
     private String email;
     private String contraseña;
-    //Rol
     private Integer id_rol;
 
 }

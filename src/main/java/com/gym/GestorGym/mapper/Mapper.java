@@ -19,8 +19,21 @@ public class Mapper {
                 .apellido(p.getApellido())
                 .email(p.getEmail() )
                 .contraseña(p.getContraseña())
+                .id_rol(p.getRol() != null ? p.getRol().getId_rol() : null)
                 .build();
     }
+
+    public static Persona toEntity(PersonaDTO dto) {
+        if (dto == null) return null;
+        return Persona.builder()
+                .id_persona(dto.getId_persona())
+                .nombre(dto.getNombre())
+                .apellido(dto.getApellido())
+                .email(dto.getEmail())
+                .contraseña(dto.getContraseña())
+                .build();
+    }
+
 
     //Mapeo de Rol a RolDTO
     public static RolDTO toDTO(Rol r){
