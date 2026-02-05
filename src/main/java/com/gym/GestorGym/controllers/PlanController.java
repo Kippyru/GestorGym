@@ -1,9 +1,9 @@
 package com.gym.GestorGym.controllers;
 
 import com.gym.GestorGym.dto.PlanDTO;
-import com.gym.GestorGym.models.Plan;
 import com.gym.GestorGym.service.PlanService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -14,31 +14,31 @@ public class PlanController {
     @Autowired
     private PlanService planService;
     @PostMapping("/crear")
-    public String crear(@RequestBody PlanDTO planDTO){
+    public ResponseEntity<String> crear(@RequestBody PlanDTO planDTO){
         planService.crear(planDTO);
-        return "Plan Creado";
+        return ResponseEntity.ok("Plan Creado");
     }
 
     @GetMapping("/list")
-    public List<Plan> lista(){
+    public List<PlanDTO> lista(){
         return planService.lista();
     }
 
-    @GetMapping("/listid")
-    public Plan listid(@PathVariable int id) {
+    @GetMapping("/list/{id}")
+    public PlanDTO listaId(@PathVariable int id) {
         return planService.listaId(id);
     }
 
-    @PutMapping("/update")
-    public String update(@PathVariable int id,
+    @PutMapping("/update/{id}")
+    public ResponseEntity<String> update(@PathVariable int id,
                          @RequestBody PlanDTO planDTO) {
         planService.update(id, planDTO);
-        return "Plan Actualizado";
+        return ResponseEntity.ok("Plan Actualizado");
     }
 
-    @DeleteMapping("/delete")
-    public String eliminar(@PathVariable int id) {
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<String> eliminar(@PathVariable int id) {
         planService.delete(id);
-        return "Plan Eliminado";
+        return ResponseEntity.ok("Plan Eliminado");
     }
 }

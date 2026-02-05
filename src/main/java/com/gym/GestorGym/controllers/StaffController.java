@@ -4,6 +4,7 @@ import com.gym.GestorGym.dto.StaffDTO;
 import com.gym.GestorGym.models.Staff;
 import com.gym.GestorGym.service.StaffService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,9 +16,9 @@ public class StaffController {
     private StaffService staffService;
 
     @PostMapping("/crear")
-    public String crear(@RequestBody StaffDTO staffDTO) {
+    public ResponseEntity<String> crear(@RequestBody StaffDTO staffDTO) {
         staffService.crear(staffDTO);
-        return "Staff Creado";
+        return ResponseEntity.ok("Staff Creado");
     }
 
     @GetMapping("/list")
@@ -26,20 +27,20 @@ public class StaffController {
     }
 
     @GetMapping("/listid")
-    public Staff listid(@PathVariable int id) {
+    public Staff listaId(@PathVariable int id) {
         return staffService.listaId(id);
     }
 
     @PutMapping("/update")
-    public String update(@PathVariable int id,
+    public ResponseEntity<String> update(@PathVariable int id,
                          @RequestBody StaffDTO staffDTO) {
         staffService.update(id, staffDTO);
-        return "Staff Actualizado";
+        return ResponseEntity.ok("Staff Actualizado");
     }
 
     @DeleteMapping("/delete")
-    public String eliminar(@PathVariable int id) {
+    public ResponseEntity<String> delete(@PathVariable int id) {
         staffService.delete(id);
-        return "Staff Eliminado";
+        return ResponseEntity.ok("Staff Eliminado");
     }
 }

@@ -1,9 +1,9 @@
 package com.gym.GestorGym.controllers;
 
 import com.gym.GestorGym.dto.ClaseDTO;
-import com.gym.GestorGym.models.Clase;
 import com.gym.GestorGym.service.ClaseService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,30 +15,30 @@ public class ClaseController {
     private ClaseService claseService;
 
     @PostMapping("/crear")
-    public String crear(@RequestBody ClaseDTO claseDTO){
+    public ResponseEntity<String> crear(@RequestBody ClaseDTO claseDTO){
         claseService.crear(claseDTO);
-        return "Clase Creada";
+        return ResponseEntity.ok( "Clase Creada");
     }
     @GetMapping("/list")
-    public List<Clase> lista(){
+    public List<ClaseDTO> lista(){
         return claseService.lista();
     }
 
-    @GetMapping("/listid")
-    public Clase listid(@PathVariable int id) {
+    @GetMapping("/list/{id}")
+    public ClaseDTO listaId(@PathVariable int id) {
         return claseService.listaId(id);
     }
 
-    @PutMapping("/update")
-    public String update(@PathVariable int id,
+    @PutMapping("/update/{id}")
+    public ResponseEntity<String> update(@PathVariable int id,
                          @RequestBody ClaseDTO claseDTO) {
         claseService.update(id, claseDTO);
-        return "Clase Actualizada";
+        return ResponseEntity.ok( "Clase Actualizada");
     }
 
-    @DeleteMapping("/delete")
-    public String eliminar(@PathVariable int id) {
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<String> delete(@PathVariable int id) {
         claseService.delete(id);
-        return "Clase Eliminada";
+        return ResponseEntity.ok("Clase Eliminada");
     }
 }

@@ -1,9 +1,9 @@
 package com.gym.GestorGym.controllers;
 
 import com.gym.GestorGym.dto.RolDTO;
-import com.gym.GestorGym.models.Rol;
 import com.gym.GestorGym.service.RolService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,32 +16,32 @@ public class RolController {
     private RolService rolService;
 
     @PostMapping("/crear")
-    public String crear(@RequestBody RolDTO rolDTO) {
+    public ResponseEntity<String> crear(@RequestBody RolDTO rolDTO) {
         rolService.crear(rolDTO);
 
-        return "Rol creado";
+        return ResponseEntity.ok("Rol creado");
     }
 
     @GetMapping("/list")
-    public List<Rol> lista(){
+    public List<RolDTO> lista(){
         return rolService.lista();
     }
 
-    @GetMapping("/listid")
-    public Rol listid(@PathVariable int id) {
+    @GetMapping("/list/{id}")
+    public RolDTO listaId(@PathVariable int id) {
         return rolService.listaId(id);
     }
 
-    @PutMapping("/update")
-    public String update(@PathVariable int id,
+    @PutMapping("/update/{id}")
+    public ResponseEntity<String> update(@PathVariable int id,
                          @RequestBody RolDTO rolDTO) {
         rolService.update(id, rolDTO);
-        return "Rol Actualizado";
+        return ResponseEntity.ok("Rol Actualizado");
     }
 
-    @DeleteMapping("/delete")
-    public String eliminar(@PathVariable int id) {
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<String> delete(@PathVariable int id) {
         rolService.delete(id);
-        return "Rol Eliminado";
+        return ResponseEntity.ok("Rol Eliminado");
     }
 }
