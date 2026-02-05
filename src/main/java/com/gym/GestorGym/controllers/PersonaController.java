@@ -2,7 +2,6 @@ package com.gym.GestorGym.controllers;
 
 import com.gym.GestorGym.dto.PersonaDTO;
 import com.gym.GestorGym.service.IPersonaService;
-import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -32,13 +31,16 @@ public class PersonaController  {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<PersonaDTO> actualizarPersona (@PathVariable Integer id_persona,
-                                                        @RequestBody PersonaDTO dto) {
+    public ResponseEntity<PersonaDTO> actualizarPersona (
+            @PathVariable("id") Integer id_persona,
+            @RequestBody PersonaDTO dto) {
+
         return ResponseEntity.ok(personaService.actualizarPersona(id_persona,dto));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> borrarPersona (@PathVariable Integer id_persona) {
+    public ResponseEntity<Void> borrarPersona (
+            @PathVariable("id") Integer id_persona) {
         personaService.eliminarPersona(id_persona);
         return ResponseEntity.noContent().build();
     }

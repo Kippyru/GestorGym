@@ -5,10 +5,7 @@ package com.gym.GestorGym.models;
 //SERVICE C/U SERIVCIO
 //REPOSITORIES CONFIG REPO DB
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.*;
 
 //@Data tiene todo pros y contras
@@ -25,4 +22,8 @@ public class Persona {
     private String apellido;
     private String email;
     private String contraseña;
+
+    @ManyToOne
+    @JoinColumn(name = "id_rol", nullable = false)
+    private Rol rol;
 }
