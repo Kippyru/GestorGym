@@ -6,7 +6,6 @@ import lombok.*;
 @Getter @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
 @Entity
 public class Rol {
     @Id

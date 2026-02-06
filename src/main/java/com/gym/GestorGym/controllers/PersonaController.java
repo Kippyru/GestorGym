@@ -28,19 +28,24 @@ public class PersonaController {
         return ResponseEntity.ok(personaService.traerPersonas());
     }
 
-    @PostMapping
+    @GetMapping ("/lista/{id}")
+    public PersonaDTO buscarId (@PathVariable Integer id){
+        return personaService.buscarId(id);
+    }
+
+    @PostMapping ("/crear")
     public ResponseEntity<PersonaDTO> crearPersona(@RequestBody PersonaDTO dto) {
         // El Controller NO busca en el repo, solo delega al Service
         PersonaDTO creado = personaService.crearPersona(dto);
         return ResponseEntity.created(URI.create("/api/persona/" + creado.getId_persona())).body(creado);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/actualizar/{id}")
     public ResponseEntity<PersonaDTO> actualizarPersona(@PathVariable("id") Integer id, @RequestBody PersonaDTO dto) {
         return ResponseEntity.ok(personaService.actualizarPersona(id, dto));
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/borrar/{id}")
     public ResponseEntity<Void> borrarPersona(@PathVariable("id") Integer id) {
         personaService.eliminarPersona(id);
         return ResponseEntity.noContent().build();

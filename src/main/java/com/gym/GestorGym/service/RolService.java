@@ -1,14 +1,16 @@
 package com.gym.GestorGym.service;
 
+import com.gym.GestorGym.dto.PersonaDTO;
 import com.gym.GestorGym.dto.RolDTO;
 import com.gym.GestorGym.exception.NotFoundException;
 import com.gym.GestorGym.mapper.Mapper;
+import com.gym.GestorGym.models.Persona;
 import com.gym.GestorGym.models.Rol;
 import com.gym.GestorGym.repository.RolRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
-
+/*
 public class RolService implements IRolService {
 
     @Autowired
@@ -19,12 +21,11 @@ public class RolService implements IRolService {
         return repo.findAll().stream().map(Mapper::toDTO).toList();
     }
 
-    @Override
+
     public RolDTO crearRol(RolDTO rolDto) {
-        var rol = Rol.builder()
-                .nombre(rolDto.getNombre())
-                .build();
-        return Mapper.toDTO(repo.save(rol));
+        Rol rol = Mapper.toEntity(rolDto);
+        repo.save(rol);
+        return rolDto;
     }
 
     @Override
@@ -46,3 +47,4 @@ public class RolService implements IRolService {
     }
 
 }
+*/

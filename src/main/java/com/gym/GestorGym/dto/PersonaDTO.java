@@ -8,7 +8,6 @@ import lombok.*;
 @Getter @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
 public class PersonaDTO {
     private Integer id_persona;
     private String nombre;

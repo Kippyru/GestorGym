@@ -4,6 +4,7 @@ package com.gym.GestorGym.service;
 import com.gym.GestorGym.dto.PersonaDTO;
 import com.gym.GestorGym.exception.NotFoundException;
 import com.gym.GestorGym.mapper.Mapper;
+import com.gym.GestorGym.mapper.PersonaMapper;
 import com.gym.GestorGym.models.Persona;
 import com.gym.GestorGym.models.Rol;
 import com.gym.GestorGym.repository.PersonaRepository;
@@ -20,51 +21,38 @@ public class PersonaService implements IPersonaService {
     @Autowired
     private PersonaRepository repo;
 
-    @Override
-    public List<PersonaDTO> traerPersonas() {
-        return repo.findAll().stream().map(Mapper::toDTO).toList();
-    }
-
-    @Override
-    public PersonaDTO crearPersona(PersonaDTO personaDto) {
-        // 1. Usamos el Mapper para pasar de DTO a Entidad
-        Persona per = Mapper.toEntity(personaDto);
-
-        // 2. Buscamos el rol y lo asignamos
-        if (personaDto.getId_rol() != null) {
-            Rol rol = rolRepo.findById(personaDto.getId_rol())
-                    .orElseThrow(() -> new NotFoundException("El Rol con ID " + personaDto.getId_rol() + " no existe"));
-            per.setRol(rol);
-        }
-
-        // 3. Guardamos y devolvemos mapeado a DTO
-        return Mapper.toDTO(repo.save(per));
-    }
     @Autowired
-    private RolRepository rolRepo;
-    @Override
+    private PersonaMapper personaMapper;
+
+    public List<PersonaDTO> traerPersonas() {
+        List<Persona>listaPersona = repo.findAll();
+        return personaMapper.toList(listaPersona);
+    }
+
+    public PersonaDTO buscarId(Integer id_persona){
+        Persona per = repo.findById(id_persona)
+                .orElseThrow(() -> new NotFoundException("Persona no encontrada"));
+        return personaMapper.toDto(per);
+    }
+
+
+        //revisar dudoso
+    public PersonaDTO crearPersona(PersonaDTO personaDto) {
+        Persona per = personaMapper.toEntity(personaDto);
+        repo.save(per);
+        return personaDto;
+    }
+
     public PersonaDTO actualizarPersona(Integer id_persona, PersonaDTO personaDto) {
         //existe la persona?
         Persona per = repo.findById(id_persona)
-        .orElseThrow(() -> new NotFoundException("Producto no encontrado"));
-        per.setNombre(personaDto.getNombre());
-        per.setApellido(personaDto.getApellido());
-        per.setEmail(personaDto.getEmail());
-        per.setContraseña(personaDto.getContraseña());
-        System.out.println("antes del if -------------------------");
-        if (personaDto.getId_rol() != null) {
-            Rol rol = rolRepo.findById(personaDto.getId_rol())
-                    .orElseThrow(() -> new NotFoundException("Rol no encontrado"));
-            System.out.println("------------------------------------------------");
-            System.out.println("Rol encontrado" + rol.getNombre() + rol.getId_rol());
-            System.out.println("----------------------------------------------------------------");
-            per.setRol(rol);
-        }
+            .orElseThrow(() -> new NotFoundException("Persona no encontrada"));
+        personaMapper.updatePersona(personaDto, per);
+        Persona perU = repo.save(per);
 
-        return Mapper.toDTO(repo.save(per));
+        return personaMapper.toDto(perU);
     }
 
-    @Override
     public void eliminarPersona(Integer id_persona) {
         if (!repo.existsById(id_persona)){
             throw new NotFoundException("Persona no encontrada para eliminar");

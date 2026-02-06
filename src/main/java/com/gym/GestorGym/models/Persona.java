@@ -13,7 +13,6 @@ import lombok.*;
 @Getter @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 public class Persona {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
