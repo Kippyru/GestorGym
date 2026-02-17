@@ -3,17 +3,13 @@ package com.gym.GestorGym.service;
 
 import com.gym.GestorGym.dto.PersonaDTO;
 import com.gym.GestorGym.exception.NotFoundException;
-import com.gym.GestorGym.mapper.Mapper;
 import com.gym.GestorGym.mapper.PersonaMapper;
 import com.gym.GestorGym.models.Persona;
-import com.gym.GestorGym.models.Rol;
 import com.gym.GestorGym.repository.PersonaRepository;
-import com.gym.GestorGym.repository.RolRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-
 
 @Service
 public class PersonaService implements IPersonaService {
@@ -35,8 +31,6 @@ public class PersonaService implements IPersonaService {
         return personaMapper.toDto(per);
     }
 
-
-        //revisar dudoso
     public PersonaDTO crearPersona(PersonaDTO personaDto) {
         Persona per = personaMapper.toEntity(personaDto);
         repo.save(per);
@@ -44,9 +38,9 @@ public class PersonaService implements IPersonaService {
     }
 
     public PersonaDTO actualizarPersona(Integer id_persona, PersonaDTO personaDto) {
-        //existe la persona?
+
         Persona per = repo.findById(id_persona)
-            .orElseThrow(() -> new NotFoundException("Persona no encontrada"));
+                .orElseThrow(() -> new NotFoundException("Persona no encontrada"));
         personaMapper.updatePersona(personaDto, per);
         Persona perU = repo.save(per);
 
@@ -60,4 +54,5 @@ public class PersonaService implements IPersonaService {
 
         repo.deleteById(id_persona);
     }
+
 }
