@@ -1,9 +1,7 @@
 package com.gym.GestorGym.mapper;
 
 import com.gym.GestorGym.dto.ClaseDTO;
-import com.gym.GestorGym.dto.RolDTO;
 import com.gym.GestorGym.models.Clase;
-import com.gym.GestorGym.models.Rol;
 import com.gym.GestorGym.repository.ClaseRepository;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;

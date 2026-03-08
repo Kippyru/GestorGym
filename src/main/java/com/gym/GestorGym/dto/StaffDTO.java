@@ -14,4 +14,7 @@ public class StaffDTO {
 
     private Integer id_staff;
     private String area;
+    private Integer id_persona;
+    private Integer id_turno;
+
 }

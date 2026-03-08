@@ -1,8 +1,6 @@
 package com.gym.GestorGym.models;
 
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,11 +12,24 @@ import java.time.LocalTime;
 @Getter @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Entity
+@Table(name = "turno")
 public class Turno {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id_turno;
+    @Column(name = "id_turno", nullable = false)
+    private Integer id;
+
+    @Column(name = "fecha", nullable = false)
     private LocalDate fecha;
+
+    @Column(name = "hora", nullable = false)
     private LocalTime hora;
-    private int cupos;
+
+    @Column(name = "cupos", nullable = false)
+    private Integer cupos;
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "id_clase", nullable = false)
+    private Clase idClase;
 }
