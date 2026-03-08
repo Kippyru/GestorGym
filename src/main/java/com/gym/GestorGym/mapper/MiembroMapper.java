@@ -4,6 +4,7 @@ import com.gym.GestorGym.dto.MiembroDTO;
 import com.gym.GestorGym.models.Miembro;
 import com.gym.GestorGym.models.Persona;
 import com.gym.GestorGym.repository.PersonaRepository;
+import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.Named;
@@ -11,7 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
-
+@Mapper(componentModel = "spring")
 public abstract class MiembroMapper {
 
     @Autowired

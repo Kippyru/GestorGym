@@ -19,4 +19,6 @@ public class TurnoDTO {
     private LocalDate fecha;
     private LocalTime hora;
     private int cupos;
+
+    private int idClase;
 }
