@@ -1,12 +1,7 @@
 package com.gym.GestorGym.controllers;
 
 import com.gym.GestorGym.dto.PersonaDTO;
-import com.gym.GestorGym.exception.NotFoundException;
-import com.gym.GestorGym.mapper.Mapper;
-import com.gym.GestorGym.models.Persona;
-import com.gym.GestorGym.models.Rol;
 import com.gym.GestorGym.service.IPersonaService;
-import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

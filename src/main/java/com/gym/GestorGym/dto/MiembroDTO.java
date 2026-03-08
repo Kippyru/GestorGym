@@ -1,5 +1,6 @@
 package com.gym.GestorGym.dto;
 
+import com.gym.GestorGym.models.Persona;
 import lombok.*;
 
 import java.time.LocalDate;
@@ -8,9 +9,9 @@ import java.time.LocalDate;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
 public class MiembroDTO {
     private int id_miembro;
     private boolean estado;
     private LocalDate fecha_ingreso;
+    private Integer id_persona;
 }

@@ -1,9 +1,6 @@
 package com.gym.GestorGym.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
@@ -11,7 +8,6 @@ import java.time.LocalDate;
 @Getter @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
 @Entity
 public class Miembro {
     @Id
@@ -19,4 +15,7 @@ public class Miembro {
     private Integer id_miembro;
     private boolean estado;
     private LocalDate fecha_ingreso;
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "id_persona", nullable = false)
+    private Persona id_persona;
 }
